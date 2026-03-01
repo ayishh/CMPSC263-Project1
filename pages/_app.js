@@ -1,13 +1,14 @@
 import Head from 'next/head' //use instead of head
 import { StateContext } from "@/context/StateContext"
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import theme from '@/styles/theme'
 
 export const GlobalStyle = createGlobalStyle`
-  * 
-  {
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   }
 `
 
@@ -15,7 +16,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
         <Head>
-          <title>MVP Starter</title>
+          <title>JUAL</title>
           <meta name='description' content='Put a description here about your app'/>
           <meta name='robots' content='index, follow'/>
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon_package/apple-touch-icon.png"/>
@@ -29,7 +30,9 @@ export default function App({ Component, pageProps }) {
         <GlobalStyle />
 
       <StateContext>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </StateContext>
     </>
   )

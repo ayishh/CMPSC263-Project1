@@ -5,10 +5,26 @@ import Footer from "@/components/LandingPage/Footer"
 export default function Home() {
   return (
     <>
-        <Navbar/>
-        <Hero text={'WELCOME TO MY CLASS'} />
-        <Hero />
+      <PageWrapper>
+        <HeaderSection>
+          <Navbar />
+          <Hero />
+        </HeaderSection>
         <Footer />
+      </PageWrapper>
     </>
   )
 }
+
+const HeaderSection = styled.div`
+display: flex;
+flex-direction: column;
+text-align: center;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
