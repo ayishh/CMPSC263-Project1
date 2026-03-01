@@ -41,14 +41,7 @@ const Dashboard = () => {
         <Content>
           <Title>Welcome to the Dashboard!</Title>
           <Section>
-            
-
-              
-            
-
-            
-
-
+          
           </Section>
         </Content>
     </Maincontent>
@@ -60,18 +53,23 @@ const Dashboard = () => {
 
 //STYLED COMPONENTS
 
+const PageWrapper = styled.div`
+display: flex;
+// flex-direction: column;
+min-height: 100vh;
+`;
+
 const Maincontent = styled.main`
 flex: 1;
 flex-direction: column;
 display: flex;
 width: 100%;
 `
-
 const Header = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 10px 10px;
-`;
+`
 
 const Content = styled.div`
   flex: 1;
@@ -81,23 +79,18 @@ const Content = styled.div`
   justify-content: center;  
 `;
 
-const PageWrapper = styled.div`
-display: flex;
-// flex-direction: column;
-min-height: 100vh;
-`;
-
 const Section = styled.section`
   // flex: 1;
   display: flex;
   width: 95%;
-  height: 80%;
+  height: 90%;
   gap: 20px;
   background-color: white;
   gap: 20px;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   padding: 20px;
+  margin: 20px auto;
 `
 
 const Title = styled.h1`
@@ -105,15 +98,8 @@ const Title = styled.h1`
   font-weight: 1000;
   text-align: center;
   // margin-top: 1rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 `;
-
-
-
-
-
-
-
 
 
 export default Dashboard

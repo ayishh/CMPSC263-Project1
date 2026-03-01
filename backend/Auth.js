@@ -1,5 +1,5 @@
 import { auth } from "./Firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth";
+import { getAuth, signOut,createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth";
   
 // Register
 export async function registerUser(email, password) {
@@ -17,4 +17,10 @@ export async function loginUser(email, password) {
 export async function isEmailInUse(email) {
   const methods = await fetchSignInMethodsForEmail(auth, email);
   return methods.length > 0;
+}
+
+// Logout
+export const logoutUser = async () => {
+  const auth = getAuth()
+  await signOut(auth)
 }

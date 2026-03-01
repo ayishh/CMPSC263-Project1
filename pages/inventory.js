@@ -9,6 +9,8 @@ import Table from '@/components/Inventory/Table'
 import { database } from '@/backend/Firebase'
 import { collection, addDoc, getDocs, deleteDoc, doc} from 'firebase/firestore'
 import { Toaster, toast } from "react-hot-toast"
+import Sidebar from '@/components/Dashboard/SideBar'
+import UserInfo from '@/components/Dashboard/UserInfo'
 
 const Inventory = () => {
 
@@ -17,6 +19,8 @@ const Inventory = () => {
   const [quantity, setQuantity] = useState("")
   
   const [items, setItems] = useState([])
+
+  const [showAddItem, setShowAddItem] = useState(false)
 
   const addItem = async () => {
     try {
@@ -71,22 +75,100 @@ const Inventory = () => {
     }, [])  
 
   return (
-    <>
+    <PageWrapper>
+      <Sidebar/>
       <div><Toaster/></div>
-      <Title>Inventory</Title>
-        <AddItem name={name} price={price} quantity={quantity} setName={setName} setPrice={setPrice} setQuantity={setQuantity} addItem={addItem}/>
-        <Table items={items} deleteItem={deleteItem}/>
-    </>
+      <Maincontent>
+        <Header>
+          <UserInfo />
+        </Header>
+        <Content>
+          <Title>Inventory</Title>
+          <Section>
+            {/* Add item button */}
+            <ToggleButton onClick={() => setShowAddItem(!showAddItem)}>
+              {showAddItem ? "Close" : "Add Item"}
+            </ToggleButton>
+            {showAddItem && (
+              <AddItem
+                name={name}
+                price={price}
+                quantity={quantity}
+                setName={setName}
+                setPrice={setPrice}
+                setQuantity={setQuantity}
+                addItem={addItem}
+              />
+            )}
+            {/* <AddItem name={name} price={price} quantity={quantity} setName={setName} setPrice={setPrice} setQuantity={setQuantity} addItem={addItem}/> */}
+            <Table items={items} deleteItem={deleteItem}/>
+          </Section>
+        </Content>
+      </Maincontent>
+    </PageWrapper>
   )
 }
+
+
+
+const PageWrapper = styled.div`
+display: flex;
+// flex-direction: column;
+min-height: 100vh;
+`;
+
+const Maincontent = styled.main`
+flex: 1;
+flex-direction: column;
+display: flex;
+width: 100%;
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px;
+`
+
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+`;
+
+const ToggleButton = styled.button`
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.accent};
+  cursor: pointer;
+  align-self: flex-start;
+`;
+
+const Section = styled.section`
+  // flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: 90%;
+  gap: 20px;
+  background-color: white;
+  gap: 20px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 20px auto;
+`
 
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: 1000;
   text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  // margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: ${({ theme }) => theme.colors.accent};
 `
-
 
 export default Inventory

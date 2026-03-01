@@ -12,8 +12,8 @@ const InventoryTable = ({items, deleteItem}) => {
         <thead>
             <tr>
             <Th>Name</Th>
-            <Th>Price</Th>
-            <Th style={{ width: "15%" }}> Quantity</Th>
+            <Th style={{ width: "20%" }}>Price</Th>
+            <Th style={{ width: "10%" }}> Quantity</Th>
             <Th style={{ width: "10%" }}>Action</Th>
             </tr>
         </thead>
@@ -26,10 +26,10 @@ const InventoryTable = ({items, deleteItem}) => {
                 <Td>{item.quantity}</Td>
                 <Td>
                     <ButtonContainer>
-                        <Button onClick={() => deleteItem(item.id)}>
+                        <Button onClick={() => deleteItem(item.id)} style={{ backgroundColor: "red" }}>
                             Delete
                         </Button>
-                        <Button onClick={() => alert("Edit functionality coming soon!")}>
+                        <Button onClick={() => alert("Edit functionality coming soon!")}   >
                             Edit
                         </Button>
                     </ButtonContainer>
@@ -46,30 +46,32 @@ const InventoryTable = ({items, deleteItem}) => {
 }
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 1000;
   text-align: center;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.accent}; 
 `
 
 
 const TableContainer = styled.div`
 width: 90%;
-margin: 5vh auto;
-background-color: #f9f9f9;
+margin: 1vh auto;
+background-color: #white;
+border-radius: 10px;
 `
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+//   margin-top: 1px;
 `
 
 const Th = styled.th`
   border: 1px solid #ccc;
   padding: 10px;
-  background-color: #034078;
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   text-align: left;
   text-align: center;
@@ -78,7 +80,7 @@ const Th = styled.th`
 const Td = styled.td`
   border: 1px solid #ccc;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #white;
 `
 const ButtonContainer = styled.div`
 display: flex;
@@ -90,7 +92,7 @@ const Button = styled.button`
 padding: 5px 10px;
 border-radius: 5px;
 border: none;
-background-color: #034078;
+background-color: ${({ theme }) => theme.colors.primary};
 color: white;
 cursor: pointer;
 `

@@ -1,27 +1,64 @@
 import styled from "styled-components"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import UserInfo from "./UserInfo"
+import {useState} from "react"
+import {FaCashRegister, FaBars, FaChartLine } from "react-icons/fa"
+import { MdInventory2, MdLogout} from "react-icons/md";
+import { logoutUser } from "@/backend/Auth"
+import { useStateContext } from "@/context/StateContext"
+
+
+// const { setUser } = useStateContext()
+// const router = useRouter()
+
+const handleLogout = async () => {
+  await logoutUser()
+  setUser(null)
+  router.push("/")
+}
 
 const Sidebar = () => {
   const router = useRouter()
+  const { setUser } = useStateContext()
+  const [collapsed, setCollapsed] = useState(false)
 
+  const handleLogout = async () => {
+    await logoutUser()
+    setUser(null)
+    router.push("/")
+  }
   return (
-    <Wrapper>
+    <Wrapper collapsed={collapsed}>
         <TopSection>
-            <Logo>JUAL</Logo>
+            <ToggleButton onClick={() => setCollapsed(!collapsed)}>
+              <FaBars />
+            </ToggleButton>
+
+            {!collapsed && <Logo>JUAL</Logo>}
+
             <NavItem href="/pos" active={router.pathname === "/pos"}>
-            POS
+              {collapsed && <FaCashRegister />}
+              {!collapsed && "POS"}
             </NavItem>
+
             <NavItem href="/inventory" active={router.pathname === "/inventory"}>
-            Inventory
+              {collapsed && <MdInventory2 />}
+              {!collapsed && "Inventory"}
             </NavItem>
+
             <NavItem href="/sales" active={router.pathname === "/sales"}>
-            Sales
+              {collapsed && <FaChartLine />}
+              {!collapsed && "Sales"}
             </NavItem>
+
         </TopSection>
 
-        <LogOutButton onClick={() => logOut(setUser)}>Logout</LogOutButton>
+        {!collapsed &&(
+        <LogOutButton onClick={handleLogout}><MdLogout/></LogOutButton>
+        )}
+        {collapsed &&(
+          <LogOutButton onClick={handleLogout}><MdLogout/></LogOutButton>
+        )}
     </Wrapper>
   )
 }
@@ -29,14 +66,25 @@ const Sidebar = () => {
 export default Sidebar
 
 const Wrapper = styled.div`
-  width: 200px;
+  width: ${({ collapsed }) => (collapsed ? "70px" : "200px")};
   height: 100vh;
   background: ${({ theme }) => theme.colors.primary};
   display: flex;
   flex-direction: column;
-  padding: 30px 20px;
-  gap: 20px;
+  padding: ${({ collapsed }) => (collapsed ? "10px" : "30px 20px")};
+  // gap: 20px;
   justify-content: space-between;
+  transition: 0.3s ease;
+`;
+
+const ToggleButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding : 10px;
 `;
 
 const Logo = styled.h2`
@@ -45,6 +93,8 @@ const Logo = styled.h2`
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const TopSection = styled.div`
@@ -59,13 +109,12 @@ const NavItem = styled(Link)`
   padding: 10px 15px;
   border-radius: 8px;
 
-  background: ${({ active }) =>
-    active ? "${({ theme }) => theme.colors.accent}" : "transparent"};
+  background: ${({ active, theme }) =>
+    active ? theme.colors.accent : "transparent"};
 
   &:hover {
     background: ${({ theme }) => theme.colors.accent};
     color: white;
-  }
 `;
 
 const LogOutButton = styled.button`
