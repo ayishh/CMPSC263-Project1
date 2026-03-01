@@ -17,13 +17,13 @@ const Dashboard = () => {
   const router = useRouter()
 
 
-  // useEffect(() => {
-  //   if(!user){
-  //     router.push('/')
-  //   }else{
+  useEffect(() => {
+    if(!user){
+      router.push('/')
+    }else{
 
-  //   }
-  // }, [user])
+    }
+  }, [user])
 
   console.log('user in dashboard', user)
 

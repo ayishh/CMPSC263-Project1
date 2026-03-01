@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import Navbar from '@/components/Dashboard/Navbar'
 import { useStateContext } from '@/context/StateContext'
-import { useRouter } from 'next/router'
-// import Navbar from '@/components/Dashboard/Navbar'
 import UserInfo from '@/components/Dashboard/UserInfo'
 import SideBar from '@/components/Dashboard/SideBar'
 import ItemGrid from '@/components/POS/ItemGrid'
 import Receipt from '@/components/POS/Receipt'
-
 import { collection, getDocs, addDoc } from "firebase/firestore"
 import { database } from "@/backend/Firebase"
 import toast from 'react-hot-toast'
+import router from 'next/router'
 
 const POS = () => {
 
   const { user } = useStateContext()
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/login")
+    }
+  }, [user])
+
   console.log('user in dashboard', user)
   const [items, setItems] = useState([])
   const [receipt, setReceipt] = useState([])
@@ -62,7 +65,8 @@ const POS = () => {
         receipt: receipt,
         total: total,
         createdAt: new Date(),
-        userId: user?.uid || null
+        userId: user.email?user.email.split("@")[0]
+    : "Unknown"
       })
       toast.success("Receipt added successfully!")
       setReceipt([])
@@ -101,7 +105,6 @@ const POS = () => {
 const PageWrapper = styled.div`
 flex: 1;
 display: flex;
-// flex-direction: column;
 min-height: 100vh;
 `;
 
@@ -127,7 +130,6 @@ const Content = styled.div`
 
 
 const Section = styled.section`
-  // flex: 1;
   display: flex;
   flex-direction: row;
   width: 95%;

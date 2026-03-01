@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import {useState} from "react"
 import {FaCashRegister, FaBars, FaChartLine } from "react-icons/fa"
-import { MdInventory2, MdLogout} from "react-icons/md";
+import { MdInventory2, MdLogout, MdSpaceDashboard} from "react-icons/md";
 import { logoutUser } from "@/backend/Auth"
 import { useStateContext } from "@/context/StateContext"
 
@@ -35,6 +35,10 @@ const Sidebar = () => {
             </ToggleButton>
 
             {!collapsed && <Logo>JUAL</Logo>}
+            <NavItem href="/dashboard" active={router.pathname === "/dashboard"}>
+              {collapsed && <MdSpaceDashboard />}
+              {!collapsed && "Dashboard"}
+            </NavItem>
 
             <NavItem href="/pos" active={router.pathname === "/pos"}>
               {collapsed && <FaCashRegister />}

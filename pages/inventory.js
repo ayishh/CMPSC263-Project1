@@ -11,8 +11,17 @@ import { collection, addDoc, getDocs, deleteDoc, doc} from 'firebase/firestore'
 import { Toaster, toast } from "react-hot-toast"
 import Sidebar from '@/components/Dashboard/SideBar'
 import UserInfo from '@/components/Dashboard/UserInfo'
+import router from 'next/router'
 
 const Inventory = () => {
+
+  const { user } = useStateContext()
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/login")
+    }
+  }, [user])
 
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
@@ -112,8 +121,8 @@ const Inventory = () => {
 
 
 const PageWrapper = styled.div`
+flex: 1;
 display: flex;
-// flex-direction: column;
 min-height: 100vh;
 `;
 
@@ -137,22 +146,11 @@ const Content = styled.div`
   justify-content: center;  
 `;
 
-const ToggleButton = styled.button`
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.accent};
-  cursor: pointer;
-  align-self: flex-start;
-`;
-
 const Section = styled.section`
-  // flex: 1;
   display: flex;
   flex-direction: column;
   width: 95%;
-  height: 90%;
+  height: 80vh;
   gap: 20px;
   background-color: white;
   gap: 20px;
@@ -171,4 +169,13 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.colors.accent};
 `
 
+const ToggleButton = styled.button`
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme }) => theme.colors.accent};
+  cursor: pointer;
+  align-self: flex-start;
+`;
 export default Inventory
