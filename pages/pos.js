@@ -7,8 +7,9 @@ import ItemGrid from '@/components/POS/ItemGrid'
 import Receipt from '@/components/POS/Receipt'
 import { collection, getDocs, addDoc } from "firebase/firestore"
 import { database } from "@/backend/Firebase"
-import toast from 'react-hot-toast'
+import { Toaster, toast } from "react-hot-toast"
 import router from 'next/router'
+import {loadStripe} from '@stripe/stripe-js'
 
 const POS = () => {
 
@@ -23,11 +24,8 @@ const POS = () => {
   console.log('user in dashboard', user)
   const [items, setItems] = useState([])
   const [receipt, setReceipt] = useState([])
-
-  // Function to add an item to the receipt
-  const addToReceipt = (item) => {
-    setReceipt(prev => [...prev, item]) // append item to receipt
-  }
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [customerEmail, setCustomerEmail] = useState('')
 
   useEffect(() => {
     // function to get all items from firebase
@@ -50,7 +48,12 @@ const POS = () => {
     getItems()
   }, [])
 
-  // Function to handle payment and add receipt to database
+  // Function to add an item to the receipt
+  const addToReceipt = (item) => {
+    setReceipt(prev => [...prev, item]) // append item to receipt
+  }
+
+  // Function to handle payment and add receipt to database (no email sent)
   const handlePayment = async () => {
     if (receipt.length === 0) {
       toast.error("No items in receipt")
@@ -68,7 +71,7 @@ const POS = () => {
         userId: user.email?user.email.split("@")[0]
     : "Unknown"
       })
-      toast.success("Receipt added successfully!")
+      toast.success("Transaction recorded successfully!")
       setReceipt([])
     } catch (error) {
       console.log(error)
@@ -77,9 +80,82 @@ const POS = () => {
 
   }
 
+  // Function to send receipt email
+  const sendReceiptEmail = async () => {
+    if (receipt.length === 0) return
+
+    if (!customerEmail) {
+      toast.error("Please enter a valid email")
+      return
+    }
+
+    const total = receipt.reduce((sum, item) => sum + item.price, 0)
+
+    try {
+      // Add a new document to the "receipts" collection in Firestore
+      await addDoc(collection(database, "receipts"), {
+        receipt: receipt,
+        total: total,
+        createdAt: new Date(),
+        userId: user.email?user.email.split("@")[0]
+    : "Unknown"
+      })
+    
+    await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: customerEmail,
+        receipt,
+      }),
+    })
+    toast.success("Payment successful & email sent successfully!")
+    setReceipt([])
+    setCustomerEmail("")
+    setShowEmailModal(false)
+  } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong")
+    }
+  }
+
+  // Function to open email modal to enter customer email
+  const openEmailModal = () => {
+    if (receipt.length === 0) {
+      toast.error("No items in receipt")
+      return
+    }
+    setShowEmailModal(true)
+  }
+
+  // Function to remove last item
+  const voidLastItem = () => {
+    if (receipt.length === 0) {
+      toast.error("No item to void")
+      return
+    }
+
+    setReceipt(prev => prev.slice(0, -1))
+  }
+
+  // Function to cancel entire transaction
+  const cancelTransaction = () => {
+    if (receipt.length === 0) {
+      toast.error("No active transaction")
+      return
+    }
+
+    setReceipt([])
+    toast.success("Transaction cancelled")
+  }
+
+
 
   return (
     <PageWrapper>
+      <div><Toaster/></div>
       <SideBar/>
       <Maincontent>
         <Header>
@@ -92,15 +168,48 @@ const POS = () => {
               <ItemGrid items={items} addToReceipt={addToReceipt} />
             </ItemSection>
             <ReceiptSection>
-              <Receipt receipt={receipt} onPayment={handlePayment}/>
+              <Receipt 
+              receipt={receipt} 
+              onPayment={handlePayment} 
+              onSendReceipt={openEmailModal}
+              onVoidLast={voidLastItem}
+              onCancel={cancelTransaction}/>
             </ReceiptSection>
           </Section>
         </Content>
       </Maincontent>
 
+      {showEmailModal && (
+        <ModalOverlay>
+          <ModalBox>
+            <h3>Enter Customer Email</h3>
+
+            <Input
+              type="email"
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
+              placeholder="customer@email.com"
+            />
+
+            <ModalButtons>
+              <MButton onClick={() => setShowEmailModal(false)}>
+                Cancel
+              </MButton>
+
+              <MButton onClick={sendReceiptEmail}>
+                Confirm & Send
+              </MButton>
+            </ModalButtons>
+          </ModalBox>
+        </ModalOverlay>
+      )}
+
     </PageWrapper>
   )
 }
+
+
+
 
 const PageWrapper = styled.div`
 flex: 1;
@@ -183,5 +292,49 @@ align-self: center;
   // height: 100%;
   overflow-y: scroll;
 `
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`
+
+const ModalBox = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+const Input = styled.input`
+  padding: 0.7rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`
+
+const ModalButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  // margin-top: 1rem;
+  // padding: 0.5rem;
+`
+
+const MButton = styled.button`
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  cursor: pointer;
+`
+
+
 
 export default POS

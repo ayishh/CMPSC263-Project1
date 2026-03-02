@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-const Receipt = ({ receipt, onPayment }) => {
+const Receipt = ({ receipt, onPayment, onSendReceipt, onVoidLast, onCancel}) => {
 
     // Calculate the total price
     const total = receipt.reduce((sum, item) => {
@@ -18,14 +18,18 @@ const Receipt = ({ receipt, onPayment }) => {
                 <span>${item.price}</span>
                 </Item>
             ))} 
-            <Total>
-                <strong>Total:</strong>
-                <strong>${total}</strong>
-            </Total>
         </MainSection>
+        <TotalSection>
+            <span>Total:</span>
+            <span>${total}</span>
+        </TotalSection>
+        <EditReceiptSection>
+            <VoidButton onClick={onVoidLast}>Void Last Item</VoidButton>
+            <CancelButton onClick={onCancel}>Cancel Transaction</CancelButton>
+        </EditReceiptSection>
         <PaymentSection>
             <CashButton onClick={onPayment}>Pay</CashButton>
-            <QRButton>Pay & Send Receipt</QRButton>
+            <QRButton onClick={onSendReceipt}>Pay & Send Receipt</QRButton>
         </PaymentSection>
 
     </Wrapper>
@@ -37,7 +41,7 @@ export default Receipt
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  // gap: 15px;
   height: 100%;
 `
 
@@ -65,13 +69,61 @@ const Total = styled.div`
 `
 
 const MainSection = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
+`
+
+const TotalSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.accent};
+  margin-bottom: 10px;
+`
+
+const EditReceiptSection = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+`
+
+const VoidButton = styled.button`
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+`
+
+const CancelButton = styled.button`
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
 `
 
 const PaymentSection = styled.div`
+  // padding-top: 2rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top: 20px;
   margin-top: auto;
@@ -81,7 +133,7 @@ const CashButton = styled.button`
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 1rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -95,7 +147,7 @@ const QRButton = styled.button`
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 1rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;

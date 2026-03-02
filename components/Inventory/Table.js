@@ -13,7 +13,7 @@ const InventoryTable = ({items, deleteItem}) => {
             <tr>
             <Th>Name</Th>
             <Th style={{ width: "20%" }}>Price</Th>
-            <Th style={{ width: "10%" }}> Quantity</Th>
+            {/* <Th style={{ width: "10%" }}> Quantity</Th> */}
             <Th style={{ width: "10%" }}>Action</Th>
             </tr>
         </thead>
@@ -22,16 +22,16 @@ const InventoryTable = ({items, deleteItem}) => {
             {items.map(item => (
             <tr key={item.id}>
                 <Td>{item.name}</Td>
-                <Td>${item.price}</Td>
-                <Td>{item.quantity}</Td>
+                <Td style ={{textAlign: "center"}}>${item.price}</Td>
+                {/* <Td style ={{textAlign: "center"}}>{item.quantity}</Td> */}
                 <Td>
                     <ButtonContainer>
                         <Button onClick={() => deleteItem(item.id)} style={{ backgroundColor: "red" }}>
                             Delete
                         </Button>
-                        <Button onClick={() => alert("Edit functionality coming soon!")}   >
+                        {/* <Button onClick={() => alert("Edit functionality coming soon!")}   >
                             Edit
-                        </Button>
+                        </Button> */}
                     </ButtonContainer>
                 </Td>
             </tr>

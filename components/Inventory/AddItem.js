@@ -21,11 +21,11 @@ const AddItem = ({name, setName, price, setPrice, quantity, setQuantity, addItem
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        <Input
+        {/* <Input
           placeholder="Quantity"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
-        />
+        /> */}
 
         <Button onClick={addItem}>
           Add Item

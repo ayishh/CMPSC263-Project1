@@ -21,7 +21,7 @@ export default ItemGrid
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
 `
 
@@ -29,7 +29,7 @@ const ItemButton = styled.button`
   padding: 20px;
   font-size: 1rem;
   border-radius: 10px;
-  border: none;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
   color: ${({ theme }) => theme.colors.accent};
   background-color: ${({ theme }) => theme.colors.secondary};
 //   color: white;
