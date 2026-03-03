@@ -32,7 +32,7 @@ const UserInfo = () => {
         </Banner>
         <Banner>
           <WidgetTitle>Today's Weather</WidgetTitle>
-          {weather && weather.current.condition.text}
+          {weather?.current?.condition?.text || "Weather unavailable"}
         </Banner>
       </Left>
       <Right>
