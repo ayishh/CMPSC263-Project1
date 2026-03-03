@@ -6,7 +6,7 @@ import {FaCashRegister, FaBars, FaChartLine } from "react-icons/fa"
 import { MdInventory2, MdLogout, MdSpaceDashboard} from "react-icons/md";
 import { logoutUser } from "@/backend/Auth"
 import { useStateContext } from "@/context/StateContext"
-
+import { useEffect } from "react"
 
 // const { setUser } = useStateContext()
 // const router = useRouter()
@@ -18,6 +18,21 @@ const handleLogout = async () => {
 }
 
 const Sidebar = () => {
+  const [holiday, setHoliday] = useState(null)
+
+  useEffect(() => {
+    fetch("/api/holiday")
+      .then(res => res.json())
+      .then(data => {
+        if (data.holiday) {
+          setHoliday(data.holiday)
+        }
+      })
+  }, [])
+
+
+
+
   const router = useRouter()
   const { setUser } = useStateContext()
   const [collapsed, setCollapsed] = useState(false)
@@ -35,10 +50,18 @@ const Sidebar = () => {
             </ToggleButton>
 
             {!collapsed && <Logo>JUAL</Logo>}
-            <NavItem href="/dashboard" active={router.pathname === "/dashboard"}>
+
+            {/* {!collapsed && holiday && (
+              <HolidayBanner>
+                <h4>Today's Holiday</h4>
+                {holiday.name}
+              </HolidayBanner>
+            )} */}
+
+            {/* <NavItem href="/dashboard" active={router.pathname === "/dashboard"}>
               {collapsed && <MdSpaceDashboard />}
               {!collapsed && "Dashboard"}
-            </NavItem>
+            </NavItem> */}
 
             <NavItem href="/pos" active={router.pathname === "/pos"}>
               {collapsed && <FaCashRegister />}
@@ -93,7 +116,7 @@ const ToggleButton = styled.button`
 
 const Logo = styled.h2`
   color: white;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
@@ -119,6 +142,7 @@ const NavItem = styled(Link)`
   &:hover {
     background: ${({ theme }) => theme.colors.accent};
     color: white;
+  }
 `;
 
 const LogOutButton = styled.button`
@@ -133,3 +157,16 @@ const LogOutButton = styled.button`
   color: white;
   cursor: pointer;
 `;
+
+const HolidayBanner = styled.div`
+  // background: #ffcc00;
+  border : 2px solid ${({ theme }) => theme.colors.accent};
+  color: #000;
+  padding: 10px;
+  // margin: 10px 0;
+  margin-bottom: 30px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1rem;
+`

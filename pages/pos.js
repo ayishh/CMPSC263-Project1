@@ -212,9 +212,9 @@ const POS = () => {
 
 
 const PageWrapper = styled.div`
-flex: 1;
 display: flex;
-min-height: 100vh;
+height: 100vh;
+overflow: hidden;
 `;
 
 const Maincontent = styled.main`
@@ -239,17 +239,15 @@ const Content = styled.div`
 
 
 const Section = styled.section`
-  display: flex;
-  flex-direction: row;
+  flex: 1;
   width: 95%;
-  height: 80vh;
-  gap: 20px;
-  background-color: white;
-  gap: 20px;
+  margin: 20px auto;
+  padding: 20px;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  padding: 20px;
-  margin: 20px auto;
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
 `
 
 const Title = styled.h1`

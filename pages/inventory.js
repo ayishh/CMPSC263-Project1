@@ -121,9 +121,9 @@ const Inventory = () => {
 
 
 const PageWrapper = styled.div`
-flex: 1;
 display: flex;
-min-height: 100vh;
+height: 100vh;
+overflow: hidden;
 `;
 
 const Maincontent = styled.main`
@@ -143,14 +143,15 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;  
+  // justify-content: center;  
 `;
 
 const Section = styled.section`
+flex: 1;
   display: flex;
   flex-direction: column;
   width: 95%;
-  height: 80vh;
+  // height: 80vh;
   gap: 20px;
   background-color: white;
   gap: 20px;

@@ -23,12 +23,12 @@ const SalesHistory = ({ history }) => {
           {order.receipt?.map((item, index) => (
             <OrderItem key={index}>
               <span>{item.name}</span>
-              <span>${item.price}</span>
+              <span>${item.price.toFixed(2)}</span>
             </OrderItem>
           ))}
 
           <OrderTotal>
-            Total: ${order.total}
+            Total: ${order.total.toFixed(2)}
           </OrderTotal>
 
         </OrderCard>

@@ -47,6 +47,7 @@ const Signup = () => {
         setUser(newUser)
         // router.push('/dashboard')
         // alert('Signup successful! Please log in with your new credentials.')
+        router.push('/POS')
         toast.success('Signup successful! Please log in with your new credentials.')
     }catch(err){
         console.log('Error Signing Up', err)
@@ -63,12 +64,12 @@ const Signup = () => {
             <Header>Join us today!</Header>
             <SubHeader>Create an account and start your journey with us</SubHeader>
           </TitleSection>
-          <InputSection>
+          {/* <InputSection>
             <Input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
           </InputSection>
           <InputSection>
             <Input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-          </InputSection>
+          </InputSection> */}
           <InputSection>
             {/* <InputTitle>Email</InputTitle> */}
             <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>

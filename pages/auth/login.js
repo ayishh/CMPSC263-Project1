@@ -21,7 +21,8 @@ const Login = () => {
     try{
       const loggedInUser = await loginUser(email, password, setUser)
       setUser(loggedInUser)
-      router.push('/dashboard')
+      // router.push('/dashboard')
+      router.push('/pos')
     }catch(err){
       console.log('Error Logging In', err)
       alert('Login Failed. Please check your email and password and try again.')

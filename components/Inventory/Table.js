@@ -22,7 +22,7 @@ const InventoryTable = ({items, deleteItem}) => {
             {items.map(item => (
             <tr key={item.id}>
                 <Td>{item.name}</Td>
-                <Td style ={{textAlign: "center"}}>${item.price}</Td>
+                <Td style ={{textAlign: "center"}}>${item.price.toFixed(2)}</Td>
                 {/* <Td style ={{textAlign: "center"}}>{item.quantity}</Td> */}
                 <Td>
                     <ButtonContainer>

@@ -11,10 +11,12 @@ import { collection, getDocs, query, orderBy} from "firebase/firestore"
 import { database } from "@/backend/Firebase"
 import { Toaster, toast } from "react-hot-toast"
 import SalesHistory from '@/components/Sales/SalesHistory'
-import router from 'next/router'
+// import router from 'next/router'
+import { useRouter } from 'next/router'
 
 
 const Sales = () => {
+  const router = useRouter()
   const [history, setHistory] = useState([])
   
 
@@ -78,8 +80,10 @@ const Sales = () => {
 const PageWrapper = styled.div`
 flex: 1;
 display: flex;
+height: 100vh;
+overflow: hidden;
 // flex-direction: column;
-min-height: 100vh;
+// min-height: 100vh;
 `;
 
 const Maincontent = styled.main`
@@ -99,12 +103,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;  
+  justify-content: center; 
+  overflow-y: hidden; 
 `;
 
 
 const Section = styled.section`
-  // flex: 1;
+  flex: 1;
   display: flex;
   flex-direction: row;
   width: 95%;
@@ -116,6 +121,7 @@ const Section = styled.section`
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   padding: 20px;
   margin: 20px auto;
+  overflow-y: hidden;
 `
 
 const Title = styled.h1`

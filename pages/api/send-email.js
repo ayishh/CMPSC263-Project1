@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     })
 
     await resend.emails.send({
-      from: "JUAL <onboarding@resend.dev>",
+      from: "JUAL <receipt@pos.autos>",
       to: email,
       subject: "Thanks for your purchase from!",
       text: `

@@ -15,13 +15,13 @@ const Receipt = ({ receipt, onPayment, onSendReceipt, onVoidLast, onCancel}) => 
             {receipt.map((item, index) => (
                 <Item key={index}>
                 <span>{item.name}</span>
-                <span>${item.price}</span>
+                <span>${item.price.toFixed(2)}</span>
                 </Item>
             ))} 
         </MainSection>
         <TotalSection>
             <span>Total:</span>
-            <span>${total}</span>
+            <span>${total.toFixed(2)}</span>
         </TotalSection>
         <EditReceiptSection>
             <VoidButton onClick={onVoidLast}>Void Last Item</VoidButton>
@@ -29,7 +29,7 @@ const Receipt = ({ receipt, onPayment, onSendReceipt, onVoidLast, onCancel}) => 
         </EditReceiptSection>
         <PaymentSection>
             <CashButton onClick={onPayment}>Pay</CashButton>
-            <QRButton onClick={onSendReceipt}>Pay & Send Receipt</QRButton>
+            {/* <QRButton onClick={onSendReceipt}>Pay & Send Receipt</QRButton> */}
         </PaymentSection>
 
     </Wrapper>
