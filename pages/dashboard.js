@@ -41,7 +41,6 @@ const Dashboard = () => {
         <Content>
           <Title>Welcome to the Dashboard!</Title>
           <Section>
-          
           </Section>
         </Content>
     </Maincontent>
